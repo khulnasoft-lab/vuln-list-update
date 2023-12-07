@@ -4,11 +4,11 @@ go 1.20
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
-	github.com/khulnasoft-lab/goversion v1.0.1
 	github.com/araddon/dateparse v0.0.0-20190426192744-0d74ffceef83
 	github.com/cheggaaa/pb v2.0.7+incompatible
 	github.com/cheggaaa/pb/v3 v3.1.4
 	github.com/hashicorp/go-getter v1.7.3
+	github.com/khulnasoft-lab/goversion v1.0.1
 	github.com/kylelemons/godebug v1.1.0
 	github.com/mattn/go-jsonpointer v0.0.1
 	github.com/parnurzeal/gorequest v0.2.16
@@ -19,7 +19,8 @@ require (
 	golang.org/x/exp v0.0.0-20220321124402-2d6d886f8a82
 	golang.org/x/oauth2 v0.15.0
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
-	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/yaml.v2 v2.2.8
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -78,6 +79,5 @@ require (
 	gopkg.in/mattn/go-isatty.v0 v0.0.4 // indirect
 	gopkg.in/mattn/go-runewidth.v0 v0.0.4 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 	moul.io/http2curl v1.0.0 // indirect
 )
