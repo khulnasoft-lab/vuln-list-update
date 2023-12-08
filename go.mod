@@ -8,6 +8,7 @@ require (
 	github.com/cheggaaa/pb v2.0.7+incompatible
 	github.com/cheggaaa/pb/v3 v3.1.4
 	github.com/hashicorp/go-getter v1.7.3
+	github.com/hashicorp/go-getter/v2 v2.2.1
 	github.com/khulnasoft-lab/goversion v1.0.1
 	github.com/kylelemons/godebug v1.1.0
 	github.com/mattn/go-jsonpointer v0.0.1
