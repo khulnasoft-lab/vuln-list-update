@@ -9,9 +9,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"golang.org/x/xerrors"
-
 	"github.com/khulnasoft-lab/vuln-list-update/utils"
+	"golang.org/x/xerrors"
 )
 
 const (

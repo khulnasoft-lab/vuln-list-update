@@ -2,13 +2,12 @@ package securitydataapi_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"reflect"
 	"testing"
 
-	"github.com/kylelemons/godebug/pretty"
-
 	"github.com/khulnasoft-lab/vuln-list-update/redhat/securitydataapi"
+	"github.com/kylelemons/godebug/pretty"
 )
 
 func TestRedhatCVEJSON_UnmarshalJSON(t *testing.T) {
@@ -117,7 +116,7 @@ func TestRedhatCVEJSON_UnmarshalJSON(t *testing.T) {
 	}
 	for testname, tt := range tests {
 		t.Run(testname, func(t *testing.T) {
-			jsonByte, err := ioutil.ReadFile(tt.in)
+			jsonByte, err := os.ReadFile(tt.in)
 			if err != nil {
 				t.Fatalf("unknown error: %s", err)
 			}

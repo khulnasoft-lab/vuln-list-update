@@ -2,7 +2,6 @@ package ubuntu
 
 import (
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,10 +9,9 @@ import (
 	"time"
 
 	"github.com/araddon/dateparse"
-	"golang.org/x/xerrors"
-
 	"github.com/khulnasoft-lab/vuln-list-update/git"
 	"github.com/khulnasoft-lab/vuln-list-update/utils"
+	"golang.org/x/xerrors"
 )
 
 const (
@@ -147,7 +145,7 @@ func parse(r io.Reader) (vuln *Vulnerability, err error) {
 	vuln.Patches = map[Package]Statuses{}
 	vuln.UpstreamLinks = map[Package][]string{}
 
-	all, err := ioutil.ReadAll(r)
+	all, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}

@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	version "github.com/khulnasoft-lab/goversion/pkg/version"
+	version "github.com/aquasecurity/go-version/pkg/version"
 )
 
 type MitreCVE struct {

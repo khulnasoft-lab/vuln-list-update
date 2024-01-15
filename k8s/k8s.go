@@ -10,11 +10,10 @@ import (
 	"strings"
 	"time"
 
-	"golang.org/x/xerrors"
-
 	"github.com/khulnasoft-lab/vuln-list-update/osv"
 	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	uu "github.com/khulnasoft-lab/vuln-list-update/utils"
+	"golang.org/x/xerrors"
 )
 
 const (

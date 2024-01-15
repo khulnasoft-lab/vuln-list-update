@@ -2,18 +2,16 @@ package wolfi_test
 
 import (
 	"flag"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"os"
 	"testing"
 
+	"github.com/khulnasoft-lab/vuln-list-update/wolfi"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/khulnasoft-lab/vuln-list-update/wolfi"
 )
 
 var update = flag.Bool("update", false, "update golden files")
@@ -99,10 +97,10 @@ func TestUpdater_Update(t *testing.T) {
 				goldenPath, ok := tt.goldenFiles[path]
 				require.True(t, ok, path)
 				if *update {
-					err = ioutil.WriteFile(goldenPath, actual, 0666)
+					err = os.WriteFile(goldenPath, actual, 0666)
 					require.NoError(t, err, goldenPath)
 				}
-				expected, err := ioutil.ReadFile(goldenPath)
+				expected, err := os.ReadFile(goldenPath)
 				assert.NoError(t, err, goldenPath)
 
 				assert.JSONEq(t, string(expected), string(actual), path)

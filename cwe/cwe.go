@@ -6,14 +6,13 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
 
-	"golang.org/x/xerrors"
-
 	"github.com/khulnasoft-lab/vuln-list-update/utils"
+	"golang.org/x/xerrors"
 )
 
 type CWEConfig struct {
@@ -74,7 +73,7 @@ func (c CWEConfig) Update() error {
 }
 
 func (c CWEConfig) saveFile(b []byte, fileType string) error {
-	if err := ioutil.WriteFile(filepath.Join(c.cweDir, fileType), b, 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(c.cweDir, fileType), b, 0600); err != nil {
 		return xerrors.Errorf("failed to write %s file: %w", fileType, err)
 	}
 	return nil
@@ -104,7 +103,7 @@ func readZipFile(zf *zip.File) ([]byte, error) {
 		return nil, err
 	}
 	defer f.Close()
-	return ioutil.ReadAll(f)
+	return io.ReadAll(f)
 }
 
 func xmlToJSON(b []byte) (WeaknessCatalog, error) {

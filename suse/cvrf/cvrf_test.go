@@ -2,17 +2,15 @@ package cvrf_test
 
 import (
 	"flag"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"testing"
 
+	"github.com/khulnasoft-lab/vuln-list-update/suse/cvrf"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/khulnasoft-lab/vuln-list-update/suse/cvrf"
 )
 
 var update = flag.Bool("update", false, "update golden files")
@@ -107,7 +105,7 @@ func TestConfig_Update(t *testing.T) {
 					http.NotFound(w, r)
 					return
 				}
-				b, err := ioutil.ReadFile(filePath)
+				b, err := os.ReadFile(filePath)
 				assert.NoError(t, err, tc.name)
 				_, err = w.Write(b)
 				assert.NoError(t, err, tc.name)
@@ -146,10 +144,10 @@ func TestConfig_Update(t *testing.T) {
 				goldenPath, ok := tc.goldenFiles[path]
 				assert.True(t, ok, tc.name)
 				if *update {
-					err = ioutil.WriteFile(goldenPath, actual, 0666)
+					err = os.WriteFile(goldenPath, actual, 0666)
 					assert.NoError(t, err, tc.name)
 				}
-				expected, err := ioutil.ReadFile(goldenPath)
+				expected, err := os.ReadFile(goldenPath)
 				assert.NoError(t, err, tc.name)
 
 				assert.Equal(t, string(expected), string(actual), tc.name)

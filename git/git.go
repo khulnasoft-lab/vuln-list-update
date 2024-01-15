@@ -7,9 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"golang.org/x/xerrors"
-
 	"github.com/khulnasoft-lab/vuln-list-update/utils"
+	"golang.org/x/xerrors"
 )
 
 type Operations interface {

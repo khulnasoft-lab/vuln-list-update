@@ -5,11 +5,10 @@ import (
 	"net/url"
 	"path/filepath"
 
-	"github.com/spf13/afero"
-	"golang.org/x/xerrors"
-
 	"github.com/khulnasoft-lab/vuln-list-update/alpine"
 	"github.com/khulnasoft-lab/vuln-list-update/utils"
+	"github.com/spf13/afero"
+	"golang.org/x/xerrors"
 )
 
 const (
