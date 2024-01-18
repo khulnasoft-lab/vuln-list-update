@@ -13,7 +13,7 @@ require (
 	github.com/kylelemons/godebug v1.1.0
 	github.com/parnurzeal/gorequest v0.2.16
 	github.com/shurcooL/githubv4 v0.0.0-20231126234147-1cffa1f02456
-	github.com/shurcooL/graphql v0.0.0-20181231061246-d48a9a75455f
+	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/spf13/afero v1.11.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3
