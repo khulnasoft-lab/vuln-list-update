@@ -7,14 +7,16 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"golang.org/x/xerrors"
 )
 
 const (
-	alpineDir = "alpine-unfixed"
-	secFixUrl = "https://aquasecurity.github.io/secfixes-tracker/all.tar.gz"
+	alpineDir         = "alpine-unfixed"
+	secFixURL         = "https://khulnasoft-lab.github.io/secfixes-tracker/all.tar.gz"
+	defaultPermission = 0755
 )
 
 type Updater struct {
@@ -33,6 +35,7 @@ func WithVulnListDir(dir string) option {
 		opts.vulnListDir = dir
 	}
 }
+
 func WithURL(url string) option {
 	return func(opts *options) {
 		opts.url = url
@@ -42,7 +45,7 @@ func WithURL(url string) option {
 func NewUpdater(opts ...option) Updater {
 	o := &options{
 		vulnListDir: utils.VulnListDir(),
-		url:         secFixUrl,
+		url:         secFixURL,
 	}
 
 	for _, opt := range opts {
@@ -55,21 +58,28 @@ func NewUpdater(opts ...option) Updater {
 
 func (u Updater) Update() error {
 	dir := filepath.Join(u.vulnListDir, alpineDir)
-	log.Printf("Remove Alpine directory %s", dir)
+	log.Printf("Removing Alpine directory %s", dir)
 	if err := os.RemoveAll(dir); err != nil {
 		return xerrors.Errorf("failed to remove Alpine unfixed directory: %w", err)
 	}
-	if err := os.MkdirAll(dir, 0755); err != nil {
+
+	if err := os.MkdirAll(dir, defaultPermission); err != nil {
 		return xerrors.Errorf("mkdir error: %w", err)
 	}
 
 	log.Println("Fetching Alpine unfixed data...")
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+	defer cancel()
+
 	tmpDir, err := utils.DownloadToTempDir(ctx, u.url)
 	if err != nil {
-		return xerrors.Errorf("alpine secfixes download error: %w", err)
+		return xerrors.Errorf("Alpine secfixes download error: %w", err)
 	}
-	defer os.RemoveAll(tmpDir) // nolint: errcheck
+	defer func() {
+		if rErr := os.RemoveAll(tmpDir); rErr != nil {
+			log.Printf("Error removing temp directory: %v", rErr)
+		}
+	}()
 
 	log.Println("Saving Alpine unfixed data...")
 	err = filepath.Walk(tmpDir, func(path string, info fs.FileInfo, err error) error {
@@ -83,6 +93,7 @@ func (u Updater) Update() error {
 		if err != nil {
 			return xerrors.Errorf("file open error: %w", err)
 		}
+		defer f.Close()
 
 		var vuln unfixedVulnerability
 		if err = json.NewDecoder(f).Decode(&vuln); err != nil {
