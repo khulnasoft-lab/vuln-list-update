@@ -4,6 +4,7 @@
 [![License][license-img]][license]
 [![Update vuln-list repo](https://github.com/khulnasoft-lab/vuln-list-update/actions/workflows/update.yml/badge.svg)](https://github.com/khulnasoft-lab/vuln-list-update/actions/workflows/update.yml)
 
+[![codecov](https://codecov.io/gh/khulnasoft-lab/vuln-list-update/graph/badge.svg?token=6L14QLU9UD)](https://codecov.io/gh/khulnasoft-lab/vuln-list-update)
 [report-card-img]: https://goreportcard.com/badge/github.com/khulnasoft-lab/vuln-list-update
 [report-card]: https://goreportcard.com/report/github.com/khulnasoft-lab/vuln-list-update
 [license-img]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
