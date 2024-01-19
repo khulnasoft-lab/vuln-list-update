@@ -8,7 +8,7 @@
 [report-card]: https://goreportcard.com/report/github.com/khulnasoft-lab/vuln-list-update
 [license-img]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
 [license]: https://github.com/khulnasoft-lab/vuln-list-update/blob/main/LICENSE
-
+[![codecov](https://codecov.io/gh/khulnasoft-lab/vuln-list-update/graph/badge.svg?token=6L14QLU9UD)](https://codecov.io/gh/khulnasoft-lab/vuln-list-update)
 Collect vulnerability information and save it in parsable format automatically
 
 ## Data
