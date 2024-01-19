@@ -30,26 +30,26 @@ type Updater struct {
 	retry       int
 }
 
-type option func(c *Updater)
+type option func(*Updater)
 
 func WithVulnListDir(v string) option {
-	return func(c *Updater) { c.vulnListDir = v }
+	return func(u *Updater) { u.vulnListDir = v }
 }
 
 func WithAdvisoryDir(s string) option {
-	return func(c *Updater) { c.advisoryDir = s }
+	return func(u *Updater) { u.advisoryDir = s }
 }
 
 func WithAppFs(v afero.Fs) option {
-	return func(c *Updater) { c.appFs = v }
+	return func(u *Updater) { u.appFs = v }
 }
 
 func WithBaseURL(v *url.URL) option {
-	return func(c *Updater) { c.baseURL = v }
+	return func(u *Updater) { u.baseURL = v }
 }
 
 func WithRetry(v int) option {
-	return func(c *Updater) { c.retry = v }
+	return func(u *Updater) { u.retry = v }
 }
 
 func NewUpdater(options ...option) *Updater {
@@ -107,7 +107,7 @@ func (u Updater) Update() (err error) {
 		}
 
 		for _, file := range files {
-			if err = u.Save(release, file); err != nil {
+			if err = u.saveReleaseFile(release, file); err != nil {
 				return err
 			}
 		}
@@ -129,15 +129,14 @@ func (u Updater) traverse(url url.URL) ([]string, error) {
 
 	var files []string
 	d.Find("a").Each(func(i int, selection *goquery.Selection) {
-		if !strings.HasSuffix(selection.Text(), ".json") {
-			return
+		if strings.HasSuffix(selection.Text(), ".json") {
+			files = append(files, selection.Text())
 		}
-		files = append(files, selection.Text())
 	})
 	return files, nil
 }
 
-func (u Updater) Save(release, fileName string) error {
+func (u Updater) saveReleaseFile(release, fileName string) error {
 	log.Printf("  release: %s, file: %s", release, fileName)
 	advisoryURL := *u.baseURL
 	advisoryURL.Path = path.Join(advisoryURL.Path, release, fileName)
@@ -151,25 +150,13 @@ func (u Updater) Save(release, fileName string) error {
 		return err
 	}
 
-	// "packages" might not be an array and it causes an unmarshal error.
-	// See https://gitlab.alpinelinux.org/alpine/infra/docker/secdb/-/issues/2
-	var v interface{}
-	if err = json.Unmarshal(secdb.Packages, &v); err != nil {
-		return err
-	}
-	if _, ok := v.([]interface{}); !ok {
-		log.Printf("    skip release: %s, file: %s", release, fileName)
-		return nil
-	}
-
-	// It should succeed now.
-	var pkgs []packages
-	if err = json.Unmarshal(secdb.Packages, &pkgs); err != nil {
+	packages, err := u.unmarshalPackages(secdb.Packages)
+	if err != nil {
 		return err
 	}
 
-	for _, pkg := range pkgs {
-		if err = u.savePkg(secdb, pkg.Pkg, release); err != nil {
+	for _, pkg := range packages {
+		if err = u.savePackage(secdb, pkg, release); err != nil {
 			return err
 		}
 	}
@@ -177,21 +164,48 @@ func (u Updater) Save(release, fileName string) error {
 	return nil
 }
 
-func (u Updater) savePkg(secdb secdb, pkg pkg, release string) error {
-	secfixes := map[string][]string{}
-	for fixedVersion, v := range pkg.Secfixes {
-		// CVE-IDs might not be an array and it causes an unmarshal error.
-		vv, ok := v.([]interface{})
-		if !ok {
-			log.Printf("    skip pkg: %s, version: %s", pkg.Name, fixedVersion)
+func (u Updater) unmarshalPackages(packagesJSON json.RawMessage) ([]packages, error) {
+	var v interface{}
+	if err := json.Unmarshal(packagesJSON, &v); err != nil {
+		return nil, err
+	}
+
+	pkgs, ok := v.([]interface{})
+	if !ok {
+		log.Printf("    skip unmarshaling packages: %s", v)
+		return nil, nil
+	}
+
+	var result []packages
+	for _, pkg := range pkgs {
+		pkgJSON, err := json.Marshal(pkg)
+		if err != nil {
+			log.Printf("    skip unmarshaling package: %s", pkg)
 			continue
 		}
-		var cveIDs []string
-		for _, v := range vv {
-			cveIDs = append(cveIDs, v.(string))
+
+		var p packages
+		if err := json.Unmarshal(pkgJSON, &p); err != nil {
+			log.Printf("    skip unmarshaling package JSON: %s", pkgJSON)
+			continue
+		}
+		result = append(result, p)
+	}
+
+	return result, nil
+}
+
+func (u Updater) savePackage(secdb secdb, pkg packages, release string) error {
+	secfixes := map[string][]string{}
+	for fixedVersion, v := range pkg.Secfixes {
+		cveIDs, err := u.unmarshalCVEs(v)
+		if err != nil {
+			log.Printf("    skip package: %s, version: %s", pkg.Name, fixedVersion)
+			continue
 		}
 		secfixes[fixedVersion] = cveIDs
 	}
+
 	advisory := advisory{
 		Name:          pkg.Name,
 		Secfixes:      secfixes,
@@ -210,4 +224,22 @@ func (u Updater) savePkg(secdb secdb, pkg pkg, release string) error {
 	}
 
 	return nil
+}
+
+func (u Updater) unmarshalCVEs(v interface{}) ([]string, error) {
+	cveIDs, ok := v.([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("unexpected format for CVE IDs: %v", v)
+	}
+
+	var result []string
+	for _, cveID := range cveIDs {
+		if id, ok := cveID.(string); ok {
+			result = append(result, id)
+		} else {
+			log.Printf("    skip unmarshaling CVE ID: %v", cveID)
+		}
+	}
+
+	return result, nil
 }
