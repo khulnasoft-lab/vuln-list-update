@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"compress/gzip"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"log"
 	"net/url"
@@ -21,8 +20,9 @@ import (
 )
 
 const (
-	retry    = 3
-	rockyDir = "rocky"
+	latestReleaseAlias = "8"
+	retry              = 3
+	rockyDir           = "rocky"
 )
 
 var (
@@ -30,8 +30,8 @@ var (
 		"https://dl.rockylinux.org/vault/rocky",     // old releases
 		"https://download.rockylinux.org/pub/rocky", // actual release
 	}
-	urlFormat     = "%s/%s/%s/%s/os/"
-	defaultRepos  = []string{"BaseOS", "AppStream", "extras"}
+	urlFormat    = "%s/%s/%s/%s/os/"
+	defaultRepos = []string{"BaseOS", "AppStream", "extras"}
 	defaultArches = []string{"x86_64", "aarch64"}
 
 	releaseRegex = regexp.MustCompile(`\d+.\d+[A-Za-z0-9-.]*`)
@@ -85,11 +85,7 @@ func NewConfig(opts ...option) Config {
 }
 
 func (c Config) Update() error {
-	// there are 2 different urls for actual and old releases
 	for _, baseUrl := range c.baseUrls {
-		updated := false
-		// "8" is an alias of the latest release that doesn't contain old security advisories,
-		// so we have to get all available minor releases like 8.5 and 8.6 so that we can have all the advisories.
 		releases, err := c.getReleasesList(baseUrl)
 		if err != nil {
 			return xerrors.Errorf("failed to get a list of Rocky Linux releases: %w", err)
@@ -105,13 +101,8 @@ func (c Config) Update() error {
 					} else if err != nil {
 						return xerrors.Errorf("failed to update security advisories of Rocky Linux %s %s %s: %w", release, repo, arch, err)
 					}
-					updated = true
 				}
 			}
-		}
-		// No security advisories were found in this URL. The URL may have been changed.
-		if !updated {
-			return xerrors.Errorf("failed to get security advisories from %s", baseUrl)
 		}
 	}
 	return nil
@@ -146,10 +137,11 @@ func (c Config) update(release, repo, arch, baseUrl string) error {
 	}
 
 	log.Printf("Remove Rocky Linux %s %s %s directory %s", release, repo, arch, dirPath)
-	if err = os.RemoveAll(dirPath); err != nil {
+	if err := c.removeDirectory(dirPath); err != nil {
 		return xerrors.Errorf("failed to remove Rocky Linux %s %s %s directory: %w", release, repo, arch, err)
 	}
-	if err = os.MkdirAll(dirPath, os.ModePerm); err != nil {
+
+	if err := c.createDirectory(dirPath); err != nil {
 		return xerrors.Errorf("failed to mkdir: %w", err)
 	}
 
@@ -157,14 +149,14 @@ func (c Config) update(release, repo, arch, baseUrl string) error {
 	for year, errata := range secErrata {
 		log.Printf("Write Errata for Rocky Linux %s %s %s %s", release, repo, arch, year)
 
-		if err = os.MkdirAll(filepath.Join(dirPath, year), os.ModePerm); err != nil {
+		if err := c.createYearDirectory(dirPath, year); err != nil {
 			return xerrors.Errorf("failed to mkdir: %w", err)
 		}
 
 		bar := pb.StartNew(len(errata))
 		for _, erratum := range errata {
 			jsonPath := filepath.Join(dirPath, year, fmt.Sprintf("%s.json", erratum.ID))
-			if err = utils.Write(jsonPath, erratum); err != nil {
+			if err := utils.Write(jsonPath, erratum); err != nil {
 				return xerrors.Errorf("failed to write Rocky Linux CVE details: %w", err)
 			}
 			bar.Increment()
@@ -173,6 +165,18 @@ func (c Config) update(release, repo, arch, baseUrl string) error {
 	}
 
 	return nil
+}
+
+func (c Config) removeDirectory(dirPath string) error {
+	return os.RemoveAll(dirPath)
+}
+
+func (c Config) createDirectory(dirPath string) error {
+	return os.MkdirAll(dirPath, os.ModePerm)
+}
+
+func (c Config) createYearDirectory(dirPath, year string) error {
+	return c.createDirectory(filepath.Join(dirPath, year))
 }
 
 func (c Config) fetchUpdateInfoPath(repomdURL string) (updateInfoPath string, err error) {
