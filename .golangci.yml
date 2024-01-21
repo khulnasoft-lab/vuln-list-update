@@ -21,7 +21,7 @@ linters-settings:
     sections:
       - standard
       - default
-      - prefix(github.com/aquasecurity/)
+      - prefix(github.com/khulnasoft-lab/)
       - blank
       - dot
   gomodguard:
@@ -29,10 +29,10 @@ linters-settings:
       modules:
         - github.com/hashicorp/go-version:
             recommendations:
-              - github.com/aquasecurity/go-version
-            reason: "`aquasecurity/go-version` is degisned for our use-cases"
+              - github.com/khulnasoft-lab/goversion
+            reason: "`khulnasoft-lab/goversion` is degisned for our use-cases"
         - github.com/Masterminds/semver:
             recommendations:
-              - github.com/aquasecurity/go-version
-            reason: "`aquasecurity/go-version` is degisned for our use-cases"
+              - github.com/khulnasoft-lab/goversion
+            reason: "`khulnasoft-lab/goversion` is degisned for our use-cases"
 
