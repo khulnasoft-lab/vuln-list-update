@@ -10,7 +10,7 @@ require (
 	github.com/hashicorp/go-getter v1.7.3
 	github.com/khulnasoft-lab/goversion v1.0.1
 	github.com/kylelemons/godebug v1.1.0
-	github.com/shurcooL/githubv4 v0.0.0-20231126234147-1cffa1f02456
+	github.com/shurcooL/githubv4 v0.0.0-20240120211514-18a1ae0e79dc
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466
 	github.com/spf13/afero v1.11.0
 	github.com/stretchr/testify v1.8.4
