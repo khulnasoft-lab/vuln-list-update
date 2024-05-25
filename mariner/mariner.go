@@ -11,9 +11,8 @@ import (
 	"strings"
 
 	"github.com/cheggaaa/pb"
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"golang.org/x/xerrors"
-
-	"github.com/aquasecurity/vuln-list-update/utils"
 )
 
 const (
@@ -142,8 +141,6 @@ func (c Config) update(version, path string) error {
 	// write definitions
 	bar := pb.StartNew(len(oval.Definitions.Definition))
 	for _, def := range oval.Definitions.Definition {
-		vulnID := def.Metadata.Reference.RefID
-
 		if err := c.saveAdvisoryPerYear(filepath.Join(dirPath, definitionsDir), def); err != nil {
 			return xerrors.Errorf("failed to save advisory per year: %w", err)
 		}
@@ -158,6 +155,7 @@ func (c Config) saveAdvisoryPerYear(dirName string, def Definition) error {
 	// Use advisory_id for file name to avoid overwriting files when there are 2 definitions for same CVE
 	// cf. https://github.com/aquasecurity/trivy-db/issues/379
 	fileName := fmt.Sprintf("%s.json", AdvisoryID(def))
+
 	vulnID := def.Metadata.Reference.RefID
 	if !strings.HasPrefix(vulnID, "CVE") {
 		log.Printf("discovered non-CVE-ID: %s", vulnID)

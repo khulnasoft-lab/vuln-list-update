@@ -1,4 +1,4 @@
-module github.com/aquasecurity/vuln-list-update
+module github.com/khulnasoft-lab/vuln-list-update
 
 go 1.21.5
 

@@ -8,10 +8,9 @@ import (
 	"path/filepath"
 	"testing"
 
+	alpine "github.com/khulnasoft-lab/vuln-list-update/alpine-unfixed"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	alpine "github.com/aquasecurity/vuln-list-update/alpine-unfixed"
 )
 
 func TestUpdater_Update(t *testing.T) {
