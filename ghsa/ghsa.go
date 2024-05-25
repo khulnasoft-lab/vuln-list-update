@@ -11,12 +11,11 @@ import (
 	"time"
 
 	"github.com/cheggaaa/pb"
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	githubql "github.com/shurcooL/githubv4"
 	"github.com/shurcooL/graphql"
 	"github.com/spf13/afero"
 	"golang.org/x/xerrors"
-
-	"github.com/aquasecurity/vuln-list-update/utils"
 )
 
 // https://developer.github.com/v4/enum/securityadvisoryecosystem/

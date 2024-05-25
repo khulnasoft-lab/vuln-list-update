@@ -9,11 +9,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/khulnasoft-lab/vuln-list-update/nvd"
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/aquasecurity/vuln-list-update/nvd"
-	"github.com/aquasecurity/vuln-list-update/utils"
 )
 
 func TestUpdate(t *testing.T) {

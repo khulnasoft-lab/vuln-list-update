@@ -10,10 +10,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/khulnasoft-lab/vuln-list-update/amazon"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/xerrors"
-
-	"github.com/aquasecurity/vuln-list-update/amazon"
 )
 
 func TestConfig_Update(t *testing.T) {

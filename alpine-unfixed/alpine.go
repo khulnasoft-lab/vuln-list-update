@@ -8,9 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"golang.org/x/xerrors"
-
-	"github.com/aquasecurity/vuln-list-update/utils"
 )
 
 const (

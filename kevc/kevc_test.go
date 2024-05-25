@@ -7,10 +7,9 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/khulnasoft-lab/vuln-list-update/kevc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/aquasecurity/vuln-list-update/kevc"
 )
 
 func TestUpdate(t *testing.T) {
