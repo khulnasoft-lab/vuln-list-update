@@ -1,26 +1,24 @@
-name: Go
+name: Test
+
 on: [push, pull_request]
+
 jobs:
   test:
-    name: Test
     runs-on: ubuntu-latest
     steps:
 
-    - name: Check out code into the Go module directory
+    - name: Checkout code
       uses: actions/checkout@v4
-    
-    - name: Set up Go
+
+    - name: Install Go
       uses: actions/setup-go@v5
       with:
-        go-version-file: go.mod
+        go-version-file: 'go.mod'
 
-    - name: Lint
-      uses: golangci/golangci-lint-action@v6.0.1
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v6
       with:
-        version: v1.54
-        args : --verbose
+        version: v1.58
 
     - name: Test
-      run: |
-        make test
-
+      run: go test ./...
