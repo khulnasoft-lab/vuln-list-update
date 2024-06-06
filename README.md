@@ -12,7 +12,7 @@
 Collect vulnerability information and save it in parsable format automatically
 
 ## Data
-https://github.com/aquasecurity/vuln-list/
+https://github.com/khulnasoft-lab/vuln-list/
 
 ## Usage
 
@@ -29,5 +29,6 @@ Usage of vuln-list-update:
     	update years (only redhat)
 ```
 
-## Author
-Teppei Fukuda (knqyf263)
+## License
+
+For [LICENSE](https://github.com/khulnasoft-lab/vuln-list-update/blob/main/LICENSE) file in this repository.
