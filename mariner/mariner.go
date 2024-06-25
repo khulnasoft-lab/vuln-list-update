@@ -179,7 +179,7 @@ func (c Config) saveAdvisoryPerYear(dirName string, def Definition) error {
 // If `advisory_id` field does not exist, create this field yourself using the Azure Linux format.
 //
 // Azure Linux uses `<number_after_last_colon_from_id>-<last_number_from_version>` format for `advisory_id`.
-// cf. https://github.com/aquasecurity/vuln-list-update/pull/271#issuecomment-2111678641
+// cf. https://github.com/khulnasoft-lab/vuln-list-update/pull/271#issuecomment-2111678641
 // e.g.
 //   - `id="oval:com.microsoft.cbl-mariner:def:27423" version="2000000001"` => `27423-1`
 //   - `id="oval:com.microsoft.cbl-mariner:def:11073" version="2000000000"` => `11073`
