@@ -67,68 +67,24 @@ func TestUpdate(t *testing.T) {
 	}
 }
 
-func TestAdvisoryID(t *testing.T) {
-	tests := []struct {
-		name string
-		def  mariner.Definition
-		want string
-	}{
-		{
-			name: "advisory_id without version",
-			def: mariner.Definition{
-				Metadata: mariner.Metadata{
-					AdvisoryID: "1111",
-				},
-			},
-			want: "1111",
-		},
-		{
-			name: "advisory_id with version",
-			def: mariner.Definition{
-				Metadata: mariner.Metadata{
-					AdvisoryID: "1111-2",
-				},
-			},
-			want: "1111-2",
-		},
-		{
-			name: "build advisoryID converting long version to 1",
-			def: mariner.Definition{
-				ID:      "oval:com.microsoft.cbl-mariner:def:27423",
-				Version: "2000000001",
-			},
-			want: "27423-1",
-		},
-		{
-			name: "build advisoryID converting long version to 0",
-			def: mariner.Definition{
-				ID:      "oval:com.microsoft.cbl-mariner:def:27423",
-				Version: "2000000000",
-			},
-			want: "27423",
-		},
-		{
-			name: "build advisoryID with short 1 version",
-			def: mariner.Definition{
-				ID:      "oval:com.microsoft.cbl-mariner:def:27423",
-				Version: "1",
-			},
-			want: "27423-1",
-		},
-		{
-			name: "build advisoryID with short 0 version",
-			def: mariner.Definition{
-				ID:      "oval:com.microsoft.cbl-mariner:def:27423",
-				Version: "0",
-			},
-			want: "27423",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := mariner.AdvisoryID(tt.def)
-			require.Equal(t, tt.want, got)
-		})
+// AdvisoryID returns advisoryID for Definition.
+// If `advisory_id` field does not exist, create this field yourself using the Azure Linux format.
+//
+// Azure Linux uses `<number_after_last_colon_from_id>-<last_number_from_version>` format for `advisory_id`.
+// cf. https://github.com/khulnasoft-lab/vuln-list-update/pull/271#issuecomment-2111678641
+// e.g.
+//   - `id="oval:com.microsoft.cbl-mariner:def:27423" version="2000000001"` => `27423-1`
+//   - `id="oval:com.microsoft.cbl-mariner:def:11073" version="2000000000"` => `11073`
+//   - `id="oval:com.microsoft.cbl-mariner:def:6343" version="1"` => `6343-1`
+//   - `id="oval:com.microsoft.cbl-mariner:def:6356" version="0"` => `6356`
+func AdvisoryID(def Definition) string {
+	id := def.Metadata.AdvisoryID
+	if id == "" {
+		ss := strings.Split(def.ID, ":")
+		id = ss[len(ss)-1]
+		// for `0` versions `-0` suffix is omitted.
+		if def.Version != "" && def.Version[len(def.Version)-1:] != "0" {
+			id = fmt.Sprintf("%s-%s", id, def.Version[len(def.Version)-1:])
+		}
 	}
 }
