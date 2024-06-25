@@ -7,10 +7,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cheggaaa/pb"
-	"github.com/khulnasoft-lab/vuln-list-update/utils"
+	"github.com/cheggaaa/pb/v3"
 	"github.com/spf13/afero"
 	"golang.org/x/xerrors"
+
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 )
 
 const (
@@ -39,7 +40,9 @@ func NewConfig() Config {
 }
 
 func (c Config) getPhotonVersion() ([]string, error) {
-	var versions Versions
+	var versions struct {
+		Branches []string `json:"branches"`
+	}
 	res, err := utils.FetchURL(c.URL+versionsFile, "", c.Retry)
 	if err != nil {
 		return nil, xerrors.Errorf("failed to fetch Photon versions: %w", err)
@@ -49,6 +52,18 @@ func (c Config) getPhotonVersion() ([]string, error) {
 	}
 
 	return versions.Branches, nil
+}
+
+func (c Config) fetchAdvisory(version string) ([]byte, error) {
+	url := c.URL + fmt.Sprintf(advisoryFormat, version)
+	for i := 0; i < c.Retry; i++ {
+		res, err := utils.FetchURL(url, "", 1)
+		if err == nil {
+			return res, nil
+		}
+		log.Printf("Retrying to fetch Photon advisory for version %s (%d/%d): %v", version, i+1, c.Retry, err)
+	}
+	return nil, xerrors.Errorf("failed to fetch Photon advisory for version %s after %d retries", version, c.Retry)
 }
 
 func (c Config) Update() error {
@@ -62,7 +77,7 @@ func (c Config) Update() error {
 		if strings.ToLower(version) == "dev" {
 			continue
 		}
-		res, err := utils.FetchURL(c.URL+fmt.Sprintf(advisoryFormat, version), "", c.Retry)
+		res, err := c.fetchAdvisory(version)
 		if err != nil {
 			return xerrors.Errorf("failed to fetch Photon advisory: %w", err)
 		}
