@@ -29,5 +29,7 @@ Usage of vuln-list-update:
     	update years (only redhat)
 ```
 
-## Author
-Teppei Fukuda (knqyf263)
+## License
+
+For [LICENSE](https://github.com/khulnasoft-lab/vuln-list-update/blob/main/LICENSE) file in this repository.
+
