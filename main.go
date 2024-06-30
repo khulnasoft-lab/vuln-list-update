@@ -6,6 +6,10 @@ import (
 	"log"
 	"os"
 
+	githubql "github.com/shurcooL/githubv4"
+	"golang.org/x/oauth2"
+	"golang.org/x/xerrors"
+
 	"github.com/khulnasoft-lab/vuln-list-update/alma"
 	"github.com/khulnasoft-lab/vuln-list-update/alpine"
 	alpineunfixed "github.com/khulnasoft-lab/vuln-list-update/alpine-unfixed"
@@ -20,6 +24,7 @@ import (
 	"github.com/khulnasoft-lab/vuln-list-update/kevc"
 	"github.com/khulnasoft-lab/vuln-list-update/mariner"
 	"github.com/khulnasoft-lab/vuln-list-update/nvd"
+	"github.com/khulnasoft-lab/vuln-list-update/openeuler"
 	oracleoval "github.com/khulnasoft-lab/vuln-list-update/oracle/oval"
 	"github.com/khulnasoft-lab/vuln-list-update/osv"
 	"github.com/khulnasoft-lab/vuln-list-update/photon"
@@ -30,14 +35,11 @@ import (
 	"github.com/khulnasoft-lab/vuln-list-update/ubuntu"
 	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"github.com/khulnasoft-lab/vuln-list-update/wolfi"
-	githubql "github.com/shurcooL/githubv4"
-	"golang.org/x/oauth2"
-	"golang.org/x/xerrors"
 )
 
 var (
 	target = flag.String("target", "", "update target (nvd, alpine, alpine-unfixed, redhat, redhat-oval, "+
-		"debian, ubuntu, amazon, oracle-oval, suse-cvrf, photon, arch-linux, ghsa, glad, cwe, osv, mariner, kevc, wolfi, chainguard, k8s)")
+		"debian, ubuntu, amazon, oracle-oval, suse-cvrf, photon, arch-linux, ghsa, glad, cwe, osv, mariner, kevc, wolfi, chainguard, k8s, openeuler)")
 	vulnListDir  = flag.String("vuln-list-dir", "", "vuln-list dir")
 	targetUri    = flag.String("target-uri", "", "alternative repository URI (only glad)")
 	targetBranch = flag.String("target-branch", "", "alternative repository branch (only glad)")
@@ -174,6 +176,11 @@ func run() error {
 		ku := k8s.NewUpdater()
 		if err := ku.Update(); err != nil {
 			return xerrors.Errorf("k8s update error: %w", err)
+		}
+	case "openeuler":
+		ec := openeuler.NewConfig()
+		if err := ec.Update(); err != nil {
+			return xerrors.Errorf("openEuler CVE update error: %w", err)
 		}
 	default:
 		return xerrors.New("unknown target")

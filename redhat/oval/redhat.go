@@ -15,9 +15,10 @@ import (
 	"strings"
 
 	"github.com/cheggaaa/pb"
-	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"github.com/spf13/afero"
 	"golang.org/x/xerrors"
+
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 )
 
 const (

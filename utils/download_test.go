@@ -11,9 +11,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 )
 
 func TestDownloadToTempDir(t *testing.T) {

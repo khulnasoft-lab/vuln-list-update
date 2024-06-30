@@ -10,9 +10,10 @@ import (
 	"strings"
 
 	pb "github.com/cheggaaa/pb/v3"
-	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"github.com/spf13/afero"
 	"golang.org/x/xerrors"
+
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 )
 
 var (
