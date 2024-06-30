@@ -13,8 +13,9 @@ import (
 	"path/filepath"
 
 	"github.com/cheggaaa/pb/v3"
-	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"golang.org/x/xerrors"
+
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 )
 
 const (

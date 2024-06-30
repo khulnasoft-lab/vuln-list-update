@@ -21,7 +21,7 @@ linters-settings:
     sections:
       - standard
       - default
-      - prefix(github.com/aquasecurity/)
+      - prefix(github.com/khulnasoft-lab/)
       - blank
       - dot
   gomodguard:

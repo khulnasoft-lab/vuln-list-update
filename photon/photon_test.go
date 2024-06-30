@@ -8,10 +8,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/khulnasoft-lab/vuln-list-update/photon"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/khulnasoft-lab/vuln-list-update/photon"
 )
 
 var update = flag.Bool("update", false, "update golden files")

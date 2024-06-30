@@ -5,10 +5,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/khulnasoft-lab/vuln-list-update/oracle/oval"
 	"github.com/kylelemons/godebug/pretty"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/khulnasoft-lab/vuln-list-update/oracle/oval"
 )
 
 func TestRedhatCVEJSON_UnmarshalJSON(t *testing.T) {

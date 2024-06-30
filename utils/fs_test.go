@@ -5,10 +5,11 @@ import (
 	"math"
 	"testing"
 
-	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	"github.com/khulnasoft-lab/vuln-list-update/utils"
 )
 
 func TestWriteJSON(t *testing.T) {

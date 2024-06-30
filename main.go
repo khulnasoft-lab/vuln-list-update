@@ -6,6 +6,10 @@ import (
 	"log"
 	"os"
 
+	githubql "github.com/shurcooL/githubv4"
+	"golang.org/x/oauth2"
+	"golang.org/x/xerrors"
+
 	"github.com/khulnasoft-lab/vuln-list-update/alma"
 	"github.com/khulnasoft-lab/vuln-list-update/alpine"
 	alpineunfixed "github.com/khulnasoft-lab/vuln-list-update/alpine-unfixed"
@@ -31,9 +35,6 @@ import (
 	"github.com/khulnasoft-lab/vuln-list-update/ubuntu"
 	"github.com/khulnasoft-lab/vuln-list-update/utils"
 	"github.com/khulnasoft-lab/vuln-list-update/wolfi"
-	githubql "github.com/shurcooL/githubv4"
-	"golang.org/x/oauth2"
-	"golang.org/x/xerrors"
 )
 
 var (
