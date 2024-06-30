@@ -20,6 +20,7 @@ import (
 	"github.com/khulnasoft-lab/vuln-list-update/kevc"
 	"github.com/khulnasoft-lab/vuln-list-update/mariner"
 	"github.com/khulnasoft-lab/vuln-list-update/nvd"
+	"github.com/khulnasoft-lab/vuln-list-update/openeuler"
 	oracleoval "github.com/khulnasoft-lab/vuln-list-update/oracle/oval"
 	"github.com/khulnasoft-lab/vuln-list-update/osv"
 	"github.com/khulnasoft-lab/vuln-list-update/photon"
