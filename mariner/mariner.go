@@ -27,9 +27,9 @@ const (
 	objectsDir     = "objects"
 	statesDir      = "states"
 	definitionsDir = "definitions"
-	
-	azurePrefix    = "azurelinux-"
-	marinerPrefix  = "cbl-mariner-"
+
+	azurePrefix   = "azurelinux-"
+	marinerPrefix = "cbl-mariner-"
 )
 
 var (
