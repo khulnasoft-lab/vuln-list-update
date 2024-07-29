@@ -1,5 +1,11 @@
 name: Go
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - azurelinux
+  pull_request:
+    branches:
+      - azurelinux
 jobs:
   test:
     name: Test
