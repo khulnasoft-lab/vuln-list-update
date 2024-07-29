@@ -14,12 +14,16 @@ jobs:
       with:
         go-version-file: go.mod
 
-    - name: Lint
-      uses: golangci/golangci-lint-action@v6.0.1
-      with:
-        version: v1.54
-        args : --verbose
+    # - name: Lint
+    #   uses: golangci/golangci-lint-action@v6.0.1
+    #   with:
+    #     version: v1.54
+    #     args : --verbose
 
+    - name: Lintfix
+      run: |
+        make lintfix
+        
     - name: Test
       run: |
         make test
