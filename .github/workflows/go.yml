@@ -1,5 +1,11 @@
 name: Go
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - azurelinux
+  pull_request:
+    branches:
+      - azurelinux
 jobs:
   test:
     name: Test
@@ -19,7 +25,7 @@ jobs:
       with:
         version: v1.54
         args : --verbose
-
+        
     - name: Test
       run: |
         make test
