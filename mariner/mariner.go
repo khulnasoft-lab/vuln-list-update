@@ -166,7 +166,7 @@ func (c Config) update(version, path string, isAzureLinux bool) error {
 }
 func (c Config) saveAdvisoryPerYear(dirName string, def Definition) error {
 	// Use advisory_id for file name to avoid overwriting files when there are 2 definitions for same CVE
-	// cf. https://github.com/aquasecurity/trivy-db/issues/379
+	// cf. https://github.com/khulnasoft-lab/trivy-db/issues/379
 	fileName := fmt.Sprintf("%s.json", AdvisoryID(def))
 
 	vulnID := def.Metadata.Reference.RefID
