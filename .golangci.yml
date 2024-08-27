@@ -29,10 +29,10 @@ linters-settings:
       modules:
         - github.com/hashicorp/go-version:
             recommendations:
-              - github.com/aquasecurity/go-version
-            reason: "`aquasecurity/go-version` is degisned for our use-cases"
+              - github.com/khulnasoft-lab/go-version
+            reason: "`khulnasoft-lab/go-version` is degisned for our use-cases"
         - github.com/Masterminds/semver:
             recommendations:
-              - github.com/aquasecurity/go-version
-            reason: "`aquasecurity/go-version` is degisned for our use-cases"
+              - github.com/khulnasoft-lab/go-version
+            reason: "`khulnasoft-lab/go-version` is degisned for our use-cases"
 

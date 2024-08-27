@@ -20,7 +20,7 @@ https://github.com/khulnasoft-lab/vuln-list/
 $ vuln-list-update -h
 Usage of vuln-list-update:
   -target string
-    	update target (nvd, alpine, alpine-unfixed, redhat, redhat-oval, debian, debian-oval, ubuntu, amazon, oracle-oval, suse-cvrf, photon, arch-linux, ghsa, glad, cwe, osv, go-vulndb, mariner, kevc, wolfi, chainguard, openeuler )
+        update target (nvd, alpine, alpine-unfixed, redhat, redhat-oval, debian, ubuntu, amazon, oracle-oval, suse-cvrf, photon, arch-linux, ghsa, glad, cwe, osv, mariner, kevc, wolfi, chainguard, azure, openeuler)
   -target-branch string
     	alternative repository branch (only glad)
   -target-uri string
@@ -29,7 +29,5 @@ Usage of vuln-list-update:
     	update years (only redhat)
 ```
 
-## License
-
-For [LICENSE](https://github.com/khulnasoft-lab/vuln-list-update/blob/main/LICENSE) file in this repository.
-
+## Author
+Teppei Fukuda (knqyf263)
