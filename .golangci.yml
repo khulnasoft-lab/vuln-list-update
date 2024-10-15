@@ -15,7 +15,7 @@ linters:
   disable:
     - errcheck
     - ineffassign
-  #  - structcheck
+    - structcheck
 linters-settings:
   gci:
     sections:
