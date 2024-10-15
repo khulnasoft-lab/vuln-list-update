@@ -95,6 +95,11 @@ func (c *Config) Update() error {
 			continue
 		}
 
+		// Validate hdr.Name to prevent directory traversal
+		if strings.Contains(hdr.Name, "..") || filepath.IsAbs(hdr.Name) {
+			return xerrors.Errorf("invalid file path in tar archive: %s", hdr.Name)
+		}
+
 		advisory, err := c.loadAdvisory(tr)
 		if err != nil {
 			return xerrors.Errorf("failed to load advisory: %w", err)
