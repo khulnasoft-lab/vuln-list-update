@@ -1,6 +1,7 @@
 package arch_test
 
 import (
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -40,7 +41,7 @@ func TestUpdate(t *testing.T) {
 				b, err := os.ReadFile(tt.inputJSONFile)
 				require.NoError(t, err)
 
-				_, _ = w.Write(b)
+				_, _ = io.WriteString(w, string(b))
 			}))
 			defer ts.Close()
 
