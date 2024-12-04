@@ -55,7 +55,7 @@ type Definition struct {
 }
 type Criteria struct {
 	Operator  string      `xml:"operator,attr" json:",omitempty"`
-	Criterion []Criterion `xml:"criterion" json:",omitempty"
+	Criterion []Criterion `xml:"criterion" json:",omitempty"`
 }
 
 type Criterion struct {
