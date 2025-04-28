@@ -27,6 +27,26 @@ jobs:
         token: ${{ secrets.ORG_REPO_TOKEN }}
         path: ${{ env.VULN_LIST_DIR }}
 
+
+    - if: always()
+      name: Debian Security Bug Tracker
+      run: ./scripts/update.sh debian "Debian Security Bug Tracker"
+
+    - name: Install huggingface_hub
+      run: pip install huggingface_hub
+
+    - name: Push to Hugging Face Dataset
+      run: |
+        huggingface-cli login --token $HF_TOKEN
+        cd $VULN_LIST_DIR
+        huggingface-cli repo create vuln-list-debian --type dataset --yes || true
+        git init
+        git remote add origin https://huggingface.co/datasets/khulnasoft/vuln-list
+        git add .
+        git commit -m "Update vuln-list $(date)"
+        git push origin master --force
+
+        
     - name: Setup github user email and name
       run: |
         git config --global user.email "action@github.com"
