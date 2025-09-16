@@ -20,7 +20,7 @@ https://github.com/khulnasoft-lab/vuln-list/
 $ vuln-list-update -h
 Usage of vuln-list-update:
   -target string
-        update target (nvd, alpine, alpine-unfixed, redhat, redhat-oval, debian, ubuntu, amazon, oracle-oval, suse-cvrf, photon, arch-linux, ghsa, glad, cwe, osv, mariner, kevc, wolfi, chainguard, azure, openeuler)
+        update target (nvd, alpine, alpine-unfixed, redhat, redhat-oval, debian, ubuntu, amazon, oracle-oval, suse-cvrf, photon, arch-linux, ghsa, glad, cwe, osv, mariner, kevc, wolfi, chainguard, azure, openeuler, echo, minimos, rootio, seal)
   -target-branch string
     	alternative repository branch (only glad)
   -target-uri string
@@ -30,4 +30,4 @@ Usage of vuln-list-update:
 ```
 
 ## Author
-KhulnaSoft Lab. (khulnasoft)
+Md Sualaiman(sys.developer)
