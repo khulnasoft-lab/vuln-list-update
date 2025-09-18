@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v5
 
     - name: Set up Go
-      uses: actions/setup-go@v6
+      uses: actions/setup-go@v5
       with:
         go-version-file: go.mod
 
@@ -38,3 +38,12 @@ jobs:
     - if: always()
       name: Debian Security Bug Tracker
       run: ./scripts/update.sh debian "Debian Security Bug Tracker"
+
+    - name: Microsoft Teams Notification
+      uses: Skitionek/notify-microsoft-teams@e7a2493ac87dad8aa7a62f079f295e54ff511d88
+      if: failure()
+      with:
+        webhook_url: ${{ secrets.TRIVY_MSTEAMS_WEBHOOK }}
+        needs: ${{ toJson(needs) }}
+        job: ${{ toJson(job) }}
+        steps: ${{ toJson(steps) }}
