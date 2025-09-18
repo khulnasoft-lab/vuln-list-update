@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	securityTrackerURL = "http://vulnfeed.sealsecurity.io/v1/osv/renamed/vulnerabilities.zip"
+	securityTrackerURL = "https://vulnfeed.sealsecurity.io/v1/osv/renamed/vulnerabilities.zip"
 	sealDir            = "seal"
 )
 
