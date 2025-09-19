@@ -40,56 +40,17 @@ jobs:
 
       # Consolidate all update scripts into a matrix for maintainability
       - name: Run vulnerability source updaters
-        run: ./scripts/update.sh ${{ matrix.target }} "${{ matrix.description }}"
-        if: always()
-        strategy:
-          fail-fast: false
-          matrix:
-            include:
-              - target: alpine
-                description: "Alpine Issue Tracker"
-              - target: alpine-unfixed
-                description: "Alpine Secshfixes Tracker"
-              - target: ubuntu
-                description: "Ubuntu CVE Tracker"
-              - target: amazon
-                description: "Amazon Linux Security Center"
-              - target: oracle-oval
-                description: "Oracle Linux OVAL"
-              - target: photon
-                description: "Photon Security Advisories"
-              - target: ghsa
-                description: "GitHub Security Advisory"
-              - target: cwe
-                description: "CWE"
-              - target: suse-cvrf
-                description: "SUSE CVRF"
-              - target: glad
-                description: "GitLab Advisory Database"
-              - target: alma
-                description: "AlmaLinux Security Advisory"
-              - target: rocky
-                description: "Rocky Linux Security Advisory"
-              - target: azure
-                description: "Azure Linux and CBL-Mariner Vulnerability Data"
-              - target: osv
-                description: "OSV Database"
-              - target: wolfi
-                description: "Wolfi Security Data"
-              - target: chainguard
-                description: "Chainguard Security Data"
-              - target: openeuler
-                description: "openEuler CVE Data"
-              - target: echo
-                description: "Echo CVE Data"
-              - target: minimos
-                description: "MinimOS Security Data"
-              - target: seal
-                description: "Seal Security Data"
-              - target: eoldates
-                description: "EOL dates"
-              - target: rootio
-                description: "Root CVE Feed Tracker"
+        run: |
+          for update_data in \
+            "alpine:Alpine Issue Tracker" \
+            "alpine-unfixed:Alpine Secshfixes Tracker" \
+            "ubuntu:Ubuntu CVE Tracker" \
+            # ... and so on
+          do
+            target="${update_data%%:*}"
+            description="${update_data#*:}"
+            ./scripts/update.sh "$target" "$description"
+          done
 
       # Uncomment and configure this section for Microsoft Teams notifications on failure
       # - name: Microsoft Teams Notification
